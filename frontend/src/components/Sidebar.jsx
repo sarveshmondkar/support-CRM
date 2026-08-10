@@ -29,7 +29,7 @@ function Sidebar() {
   ];
 
   return (
-    <aside className="hidden h-screen w-64 shrink-0 flex-col bg-slate-950 text-white lg:flex">
+    <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col bg-slate-950 text-white lg:flex">
       {/* Brand */}
       <div className="flex h-20 items-center border-b border-white/10 px-6">
         <div className="flex items-center gap-3">

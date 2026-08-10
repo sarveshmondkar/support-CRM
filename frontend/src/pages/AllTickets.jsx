@@ -1,15 +1,22 @@
 import { useEffect, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
 import { getTickets } from "../services/ticketService";
 import SearchAndFilter from "../components/SearchAndFilter";
 import TicketTable from "../components/TicketTable";
 
 function AllTickets() {
   const [tickets, setTickets] = useState([]);
+
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
 
+  const [currentPage, setCurrentPage] = useState(1);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const ticketsPerPage = 10;
 
   useEffect(() => {
     const fetchTickets = async () => {
@@ -24,10 +31,7 @@ function AllTickets() {
 
         setTickets(data);
       } catch (error) {
-        setError(
-          error.response?.data?.message ||
-            "Failed to load tickets."
-        );
+        setError(error.response?.data?.message || "Failed to load tickets.");
       } finally {
         setLoading(false);
       }
@@ -39,6 +43,31 @@ function AllTickets() {
 
     return () => clearTimeout(timer);
   }, [search, status]);
+
+  // Pagination
+  const totalPages = Math.ceil(tickets.length / ticketsPerPage);
+
+  const startIndex = (currentPage - 1) * ticketsPerPage;
+
+  const currentTickets = tickets.slice(startIndex, startIndex + ticketsPerPage);
+
+  const goToPreviousPage = () => {
+    setCurrentPage((page) => Math.max(page - 1, 1));
+  };
+
+  const goToNextPage = () => {
+    setCurrentPage((page) => Math.min(page + 1, totalPages));
+  };
+
+  const handleSearchChange = (value) => {
+    setSearch(value);
+    setCurrentPage(1);
+  };
+
+  const handleStatusChange = (value) => {
+    setStatus(value);
+    setCurrentPage(1);
+  };
 
   return (
     <>
@@ -59,14 +88,14 @@ function AllTickets() {
         </div>
       </header>
 
-      <main className="px-4 py-6 sm:px-6 lg:px-8">
+      <main className="w-full px-4 py-6 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           {/* Search and Filter */}
           <SearchAndFilter
             search={search}
             status={status}
-            onSearchChange={setSearch}
-            onStatusChange={setStatus}
+            onSearchChange={handleSearchChange}
+            onStatusChange={handleStatusChange}
           />
 
           {/* Error */}
@@ -78,11 +107,69 @@ function AllTickets() {
 
           {/* Ticket Table */}
           <div className="mt-5">
-            <TicketTable
-              tickets={tickets}
-              loading={loading}
-            />
+            <TicketTable tickets={currentTickets} loading={loading} />
           </div>
+
+          {/* Pagination */}
+          {!loading && tickets.length > 0 && (
+            <div className="mt-4 flex items-center justify-between">
+              <p className="text-sm text-slate-500">
+                Showing{" "}
+                <span className="font-medium text-slate-700">
+                  {startIndex + 1}
+                </span>{" "}
+                -{" "}
+                <span className="font-medium text-slate-700">
+                  {Math.min(startIndex + ticketsPerPage, tickets.length)}
+                </span>{" "}
+                of{" "}
+                <span className="font-medium text-slate-700">
+                  {tickets.length}
+                </span>{" "}
+                tickets
+              </p>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={goToPreviousPage}
+                  disabled={currentPage === 1}
+                  aria-label="Previous page"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 transition hover:bg-slate-50 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  <ChevronLeft size={17} strokeWidth={1.9} />
+                </button>
+
+                {Array.from(
+                  { length: totalPages },
+                  (_, index) => index + 1,
+                ).map((page) => (
+                  <button
+                    key={page}
+                    type="button"
+                    onClick={() => setCurrentPage(page)}
+                    className={`flex h-9 min-w-9 items-center justify-center rounded-lg px-2 text-sm font-medium transition ${
+                      currentPage === page
+                        ? "bg-blue-600 text-white shadow-sm"
+                        : "text-slate-600 hover:bg-slate-100"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ))}
+
+                <button
+                  type="button"
+                  onClick={goToNextPage}
+                  disabled={currentPage === totalPages}
+                  aria-label="Next page"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 transition hover:bg-slate-50 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  <ChevronRight size={17} strokeWidth={1.9} />
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </main>
     </>

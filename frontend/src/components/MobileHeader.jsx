@@ -152,7 +152,7 @@ function MobileHeader() {
           </NavLink>
 
           <NavLink
-            to="/"
+            to="/tickets"
             onClick={closeMenu}
             className="flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium text-slate-300 transition hover:bg-white/5 hover:text-white"
           >
