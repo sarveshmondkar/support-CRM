@@ -3,10 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import toast from "react-hot-toast";
 
-import {
-  getTicketById,
-  updateTicket,
-} from "../services/ticketService";
+import { getTicketById, updateTicket } from "../services/ticketService";
 
 function TicketDetails() {
   const { ticketId } = useParams();
@@ -30,10 +27,7 @@ function TicketDetails() {
         setTicket(data);
         setStatus(data.status);
       } catch (error) {
-        setError(
-          error.response?.data?.message ||
-            "Failed to load ticket."
-        );
+        setError(error.response?.data?.message || "Failed to load ticket.");
       } finally {
         setLoading(false);
       }
@@ -76,8 +70,7 @@ function TicketDetails() {
       toast.success("Ticket updated successfully.");
     } catch (error) {
       const message =
-        error.response?.data?.message ||
-        "Failed to update ticket.";
+        error.response?.data?.message || "Failed to update ticket.";
 
       toast.error(message);
     } finally {
@@ -106,9 +99,7 @@ function TicketDetails() {
               Unable to load ticket
             </h2>
 
-            <p className="mt-2 text-sm text-red-700">
-              {error}
-            </p>
+            <p className="mt-2 text-sm text-red-700">{error}</p>
 
             <Link
               to="/"
@@ -147,8 +138,15 @@ function TicketDetails() {
               </h1>
 
               <p className="mt-2 text-sm text-slate-500">
-                Created{" "}
-                {new Date(ticket.createdAt).toLocaleString()}
+                Created at {" "}
+                {new Date(ticket.createdAt).toLocaleString([], {
+                  year: "numeric",
+                  month: "numeric",
+                  day: "numeric",
+                  hour: "numeric",
+                  minute: "2-digit",
+                  hour12: true,
+                })}
               </p>
             </div>
 
@@ -203,9 +201,7 @@ function TicketDetails() {
             {/* Notes */}
             <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
               <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-slate-900">
-                  Notes
-                </h2>
+                <h2 className="text-lg font-semibold text-slate-900">Notes</h2>
 
                 <span className="text-xs font-medium text-slate-400">
                   {ticket.notes?.length || 0} notes
@@ -224,9 +220,7 @@ function TicketDetails() {
                       </p>
 
                       <p className="mt-2 text-xs text-slate-400">
-                        {new Date(
-                          item.createdAt
-                        ).toLocaleString()}
+                        {new Date(item.createdAt).toLocaleString()}
                       </p>
                     </div>
                   ))}
@@ -251,9 +245,7 @@ function TicketDetails() {
                 <textarea
                   id="note"
                   value={note}
-                  onChange={(event) =>
-                    setNote(event.target.value)
-                  }
+                  onChange={(event) => setNote(event.target.value)}
                   placeholder="Write a note about this ticket..."
                   rows={4}
                   className="w-full resize-none rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
@@ -284,15 +276,11 @@ function TicketDetails() {
                 <select
                   id="status"
                   value={status}
-                  onChange={(event) =>
-                    setStatus(event.target.value)
-                  }
+                  onChange={(event) => setStatus(event.target.value)}
                   className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
                 >
                   <option value="Open">Open</option>
-                  <option value="In Progress">
-                    In Progress
-                  </option>
+                  <option value="In Progress">In Progress</option>
                   <option value="Closed">Closed</option>
                 </select>
               </div>
@@ -301,8 +289,7 @@ function TicketDetails() {
                 type="button"
                 onClick={handleUpdate}
                 disabled={
-                  updating ||
-                  (!note.trim() && status === ticket.status)
+                  updating || (!note.trim() && status === ticket.status)
                 }
                 className="mt-5 w-full rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
               >

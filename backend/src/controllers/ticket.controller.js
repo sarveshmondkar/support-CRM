@@ -4,20 +4,10 @@ import Note from "../models/note.model.js";
 // Create a new ticket
 export const createTicket = async (req, res) => {
   try {
-    const {
-      customerName,
-      customerEmail,
-      subject,
-      description,
-    } = req.body;
+    const { customerName, customerEmail, subject, description } = req.body;
 
     // Validate required fields
-    if (
-      !customerName ||
-      !customerEmail ||
-      !subject ||
-      !description
-    ) {
+    if (!customerName || !customerEmail || !subject || !description) {
       return res.status(400).json({
         message:
           "customerName, customerEmail, subject and description are required",
@@ -98,9 +88,7 @@ export const getTickets = async (req, res) => {
     }
 
     const tickets = await Ticket.find(filter)
-      .select(
-        "ticketId customerName customerEmail subject status createdAt"
-      )
+      .select("ticketId customerName customerEmail subject status createdAt")
       .sort({ createdAt: -1 });
 
     return res.status(200).json(tickets);
@@ -139,6 +127,9 @@ export const getTicketById = async (req, res) => {
       subject: ticket.subject,
       description: ticket.description,
       status: ticket.status,
+      createdAt: ticket.createdAt,
+      updatedAt: ticket.updatedAt,
+      
       notes: notes.map((note) => ({
         noteText: note.noteText,
         createdAt: note.createdAt,
