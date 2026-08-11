@@ -3,7 +3,6 @@ import {
   LayoutDashboard,
   TicketPlus,
   Tickets,
-  ChevronDown,
 } from "lucide-react";
 
 function Sidebar() {
@@ -96,11 +95,11 @@ function Sidebar() {
             </p>
           </div>
 
-          <ChevronDown
+          {/* <ChevronDown
             size={16}
             className="shrink-0 text-slate-500"
             strokeWidth={1.8}
-          />
+          /> */}
         </div>
       </div>
     </aside>

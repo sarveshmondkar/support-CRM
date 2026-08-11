@@ -72,14 +72,14 @@ function MobileHeader() {
       {/* Overlay */}
       {menuOpen && (
         <div
-          className="fixed inset-0 z-[60] bg-slate-950/50 lg:hidden"
+          className="fixed inset-0 z-60 bg-slate-950/50 lg:hidden"
           onClick={closeMenu}
         />
       )}
 
       {/* Mobile Menu */}
       <aside
-        className={`fixed left-0 top-0 z-[70] flex h-full w-72 flex-col bg-slate-950 text-white shadow-2xl transition-transform duration-300 lg:hidden ${
+        className={`fixed left-0 top-0 z-70 flex h-full w-72 flex-col bg-slate-950 text-white shadow-2xl transition-transform duration-300 lg:hidden ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >

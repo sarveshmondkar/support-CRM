@@ -1,8 +1,4 @@
-import {
-  Eye,
-  Mail,
-  UserRound,
-} from "lucide-react";
+import { Eye, Mail, UserRound } from "lucide-react";
 import { Link } from "react-router-dom";
 
 function TicketTable({ tickets, loading }) {
@@ -56,7 +52,7 @@ function TicketTable({ tickets, loading }) {
     <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
       {/* Desktop table */}
       <div className="hidden overflow-x-auto md:block">
-        <table className="w-full min-w-[760px]">
+        <table className="w-full min-w-190">
           <thead>
             <tr className="border-b border-slate-200 bg-slate-50/70">
               <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
@@ -96,16 +92,14 @@ function TicketTable({ tickets, loading }) {
                     to={`/tickets/${ticket.ticketId}`}
                     className="text-sm font-semibold text-blue-600 hover:text-blue-700"
                   >
-                    #{ticket.ticketId}
+                    {ticket.ticketId}
                   </Link>
                 </td>
 
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-50 text-xs font-semibold text-blue-600">
-                      {ticket.customerName
-                        ?.charAt(0)
-                        .toUpperCase()}
+                      {ticket.customerName?.charAt(0).toUpperCase()}
                     </div>
 
                     <div className="min-w-0">
@@ -132,7 +126,7 @@ function TicketTable({ tickets, loading }) {
                 <td className="px-6 py-4">
                   <span
                     className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${getStatusStyles(
-                      ticket.status
+                      ticket.status,
                     )}`}
                   >
                     {ticket.status}
@@ -179,7 +173,7 @@ function TicketTable({ tickets, loading }) {
 
               <span
                 className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold ${getStatusStyles(
-                  ticket.status
+                  ticket.status,
                 )}`}
               >
                 {ticket.status}
@@ -189,9 +183,7 @@ function TicketTable({ tickets, loading }) {
             <div className="mt-4 flex items-center justify-between gap-3">
               <div className="flex min-w-0 items-center gap-2">
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-50 text-xs font-semibold text-blue-600">
-                  {ticket.customerName
-                    ?.charAt(0)
-                    .toUpperCase()}
+                  {ticket.customerName?.charAt(0).toUpperCase()}
                 </div>
 
                 <div className="min-w-0">
@@ -200,9 +192,7 @@ function TicketTable({ tickets, loading }) {
                   </p>
 
                   <p className="text-xs text-slate-400">
-                    {new Date(
-                      ticket.createdAt
-                    ).toLocaleDateString()}
+                    {new Date(ticket.createdAt).toLocaleDateString()}
                   </p>
                 </div>
               </div>

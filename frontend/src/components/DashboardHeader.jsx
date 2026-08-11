@@ -1,5 +1,6 @@
-import { Bell, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Link } from "react-router-dom";
+import NotificationsDropdown from "./NotificationsDropdown";
 
 function DashboardHeader() {
   return (
@@ -20,7 +21,7 @@ function DashboardHeader() {
           className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-600 transition hover:bg-slate-50 hover:text-slate-900"
           aria-label="Notifications"
         >
-          <Bell size={19} strokeWidth={1.9} />
+          <NotificationsDropdown />
 
           <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-blue-600" />
         </button>

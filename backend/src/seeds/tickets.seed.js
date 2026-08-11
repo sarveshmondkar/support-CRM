@@ -54,8 +54,7 @@ const tickets = [
     customerName: "Vikram Gupta",
     customerEmail: "vikram.gupta@example.com",
     subject: "Wrong item delivered",
-    description:
-      "I received a different item than the one I ordered.",
+    description: "I received a different item than the one I ordered.",
     status: "In Progress",
     notes: "Replacement request has been initiated.",
   },
@@ -64,8 +63,7 @@ const tickets = [
     customerName: "Neha Joshi",
     customerEmail: "neha.joshi@example.com",
     subject: "Order cancellation",
-    description:
-      "I want to cancel my order before it gets shipped.",
+    description: "I want to cancel my order before it gets shipped.",
     status: "Open",
     notes: "",
   },
@@ -94,8 +92,7 @@ const tickets = [
     customerName: "Rohan Kulkarni",
     customerEmail: "rohan.kulkarni@example.com",
     subject: "Invoice request",
-    description:
-      "I need a copy of the invoice for my recent purchase.",
+    description: "I need a copy of the invoice for my recent purchase.",
     status: "Closed",
     notes: "Invoice was sent to the customer's email.",
   },
@@ -111,7 +108,6 @@ const tickets = [
   },
 ];
 
-
 const seedDatabase = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI);
@@ -124,7 +120,9 @@ const seedDatabase = async () => {
     console.log("Existing tickets removed");
 
     // Insert seed data
-    await Ticket.insertMany(tickets);
+    for (const ticket of tickets) {
+      await Ticket.create(ticket);
+    }
 
     console.log(`${tickets.length} tickets inserted successfully`);
 
