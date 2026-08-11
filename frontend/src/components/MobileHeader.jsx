@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  Bell,
   ChevronRight,
   LayoutDashboard,
   Menu,
@@ -10,6 +9,7 @@ import {
   X,
 } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
+import NotificationsDropdown from "./NotificationsDropdown";
 
 function MobileHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -54,7 +54,7 @@ function MobileHeader() {
             aria-label="Notifications"
             className="relative flex h-10 w-10 items-center justify-center rounded-xl text-slate-600 transition hover:bg-slate-100"
           >
-            <Bell size={19} strokeWidth={1.9} />
+            <NotificationsDropdown/>
 
             <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-blue-600" />
           </button>
