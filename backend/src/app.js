@@ -11,4 +11,11 @@ app.use(express.json());
 // Routes 
 app.use("/api/tickets", ticketRoutes);
 
+app.get("/api/health", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    message: "Support CRM API is running",
+  });
+});
+
 export default app;

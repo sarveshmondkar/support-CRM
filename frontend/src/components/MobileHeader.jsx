@@ -33,18 +33,12 @@ function MobileHeader() {
         </button>
 
         {/* Logo */}
-        <Link
-          to="/"
-          onClick={closeMenu}
-          className="flex items-center gap-2"
-        >
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 text-white">
-            <span className="text-sm font-bold">S</span>
+        <Link to="/" onClick={closeMenu} className="flex items-center gap-2">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-600 shadow-lg shadow-blue-600/20 text-white">
+            <Tickets size={21} strokeWidth={2} />
           </div>
 
-          <span className="text-sm font-bold text-slate-900">
-            Support CRM
-          </span>
+          <span className="text-sm font-bold text-slate-900">Support CRM</span>
         </Link>
 
         {/* Actions */}
@@ -54,7 +48,7 @@ function MobileHeader() {
             aria-label="Notifications"
             className="relative flex h-10 w-10 items-center justify-center rounded-xl text-slate-600 transition hover:bg-slate-100"
           >
-            <NotificationsDropdown/>
+            <NotificationsDropdown />
 
             <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-blue-600" />
           </button>
@@ -91,13 +85,9 @@ function MobileHeader() {
             </div>
 
             <div>
-              <h2 className="text-base font-bold">
-                Support CRM
-              </h2>
+              <h2 className="text-base font-bold">Support CRM</h2>
 
-              <p className="text-xs text-slate-400">
-                Customer Support
-              </p>
+              <p className="text-xs text-slate-400">Customer Support</p>
             </div>
           </div>
 
@@ -170,18 +160,13 @@ function MobileHeader() {
           <div className="flex items-center gap-3 rounded-xl px-2 py-3">
             <div className="relative flex h-9 w-9 items-center justify-center rounded-full bg-slate-700 text-xs font-semibold">
               SA
-
               <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-slate-950 bg-emerald-500" />
             </div>
 
             <div>
-              <p className="text-sm font-semibold">
-                Support Agent
-              </p>
+              <p className="text-sm font-semibold">Support Agent</p>
 
-              <p className="text-xs text-slate-400">
-                Online
-              </p>
+              <p className="text-xs text-slate-400">Online</p>
             </div>
           </div>
         </div>
