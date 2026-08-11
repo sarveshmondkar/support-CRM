@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import toast from "react-hot-toast";
 
 import DashboardHeader from "../components/DashboardHeader";
 import StatsCard from "../components/StatsCard";
@@ -29,7 +30,15 @@ function Dashboard() {
         const data = await getTickets();
         setAllTickets(data);
       } catch (error) {
-        console.error("Failed to fetch ticket statistics:", error);
+        console.error(
+          "Failed to fetch ticket statistics:",
+          error
+        );
+
+        toast.error(
+          error?.response?.data?.message ||
+            "Failed to load ticket statistics."
+        );
       }
     };
 
@@ -50,7 +59,12 @@ function Dashboard() {
 
         setTickets(data);
       } catch (error) {
-        setError(error.response?.data?.message || "Failed to load tickets.");
+        const message =
+          error?.response?.data?.message ||
+          "Failed to load tickets.";
+
+        setError(message);
+        toast.error(message);
       } finally {
         setLoading(false);
       }
@@ -68,28 +82,43 @@ function Dashboard() {
     return {
       total: allTickets.length,
 
-      open: allTickets.filter((ticket) => ticket.status === "Open").length,
+      open: allTickets.filter(
+        (ticket) => ticket.status === "Open"
+      ).length,
 
-      progress: allTickets.filter((ticket) => ticket.status === "In Progress")
-        .length,
+      progress: allTickets.filter(
+        (ticket) => ticket.status === "In Progress"
+      ).length,
 
-      closed: allTickets.filter((ticket) => ticket.status === "Closed").length,
+      closed: allTickets.filter(
+        (ticket) => ticket.status === "Closed"
+      ).length,
     };
   }, [allTickets]);
 
   // Pagination
-  const totalPages = Math.ceil(tickets.length / ticketsPerPage);
+  const totalPages = Math.ceil(
+    tickets.length / ticketsPerPage
+  );
 
-  const startIndex = (currentPage - 1) * ticketsPerPage;
+  const startIndex =
+    (currentPage - 1) * ticketsPerPage;
 
-  const currentTickets = tickets.slice(startIndex, startIndex + ticketsPerPage);
+  const currentTickets = tickets.slice(
+    startIndex,
+    startIndex + ticketsPerPage
+  );
 
   const goToPreviousPage = () => {
-    setCurrentPage((page) => Math.max(page - 1, 1));
+    setCurrentPage((page) =>
+      Math.max(page - 1, 1)
+    );
   };
 
   const goToNextPage = () => {
-    setCurrentPage((page) => Math.min(page + 1, totalPages));
+    setCurrentPage((page) =>
+      Math.min(page + 1, totalPages)
+    );
   };
 
   const handleSearchChange = (value) => {
@@ -121,9 +150,17 @@ function Dashboard() {
 
           {/* Statistics */}
           <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
-            <StatsCard title="Total Tickets" value={stats.total} type="total" />
+            <StatsCard
+              title="Total Tickets"
+              value={stats.total}
+              type="total"
+            />
 
-            <StatsCard title="Open" value={stats.open} type="open" />
+            <StatsCard
+              title="Open"
+              value={stats.open}
+              type="open"
+            />
 
             <StatsCard
               title="In Progress"
@@ -131,7 +168,11 @@ function Dashboard() {
               type="progress"
             />
 
-            <StatsCard title="Closed" value={stats.closed} type="closed" />
+            <StatsCard
+              title="Closed"
+              value={stats.closed}
+              type="closed"
+            />
           </div>
 
           {/* Tickets Section */}
@@ -163,7 +204,10 @@ function Dashboard() {
 
             {/* Ticket Table */}
             <div className="mt-5">
-              <TicketTable tickets={currentTickets} loading={loading} />
+              <TicketTable
+                tickets={currentTickets}
+                loading={loading}
+              />
             </div>
 
             {/* Pagination */}
@@ -176,7 +220,10 @@ function Dashboard() {
                   </span>{" "}
                   -{" "}
                   <span className="font-medium text-slate-700">
-                    {Math.min(startIndex + ticketsPerPage, tickets.length)}
+                    {Math.min(
+                      startIndex + ticketsPerPage,
+                      tickets.length
+                    )}
                   </span>{" "}
                   of{" "}
                   <span className="font-medium text-slate-700">
@@ -194,18 +241,23 @@ function Dashboard() {
                     aria-label="Previous page"
                     className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 transition hover:bg-slate-50 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
                   >
-                    <ChevronLeft size={17} strokeWidth={1.9} />
+                    <ChevronLeft
+                      size={17}
+                      strokeWidth={1.9}
+                    />
                   </button>
 
                   {/* Page Numbers */}
                   {Array.from(
                     { length: totalPages },
-                    (_, index) => index + 1,
+                    (_, index) => index + 1
                   ).map((page) => (
                     <button
                       key={page}
                       type="button"
-                      onClick={() => setCurrentPage(page)}
+                      onClick={() =>
+                        setCurrentPage(page)
+                      }
                       className={`flex h-9 min-w-9 items-center justify-center rounded-lg px-2 text-sm font-medium transition ${
                         currentPage === page
                           ? "bg-blue-600 text-white shadow-sm"
@@ -220,11 +272,16 @@ function Dashboard() {
                   <button
                     type="button"
                     onClick={goToNextPage}
-                    disabled={currentPage === totalPages}
+                    disabled={
+                      currentPage === totalPages
+                    }
                     aria-label="Next page"
                     className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 transition hover:bg-slate-50 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
                   >
-                    <ChevronRight size={17} strokeWidth={1.9} />
+                    <ChevronRight
+                      size={17}
+                      strokeWidth={1.9}
+                    />
                   </button>
                 </div>
               </div>

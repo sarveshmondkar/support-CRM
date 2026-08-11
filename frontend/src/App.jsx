@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import CreateTicket from "./pages/CreateTicket";
 import TicketDetails from "./pages/TicketDetails";
 import AllTickets from "./pages/AllTickets"
+
 function App() {
   return (
     <BrowserRouter>

@@ -6,6 +6,7 @@ import {
   X,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import { getTickets } from "../services/ticketService";
 
@@ -37,6 +38,8 @@ function NotificationsDropdown() {
           "Failed to fetch notifications:",
           error
         );
+
+        toast.error("Failed to load notifications.");
       }
     };
 
@@ -80,7 +83,9 @@ function NotificationsDropdown() {
       {/* Bell */}
       <button
         type="button"
-        onClick={() => setIsOpen((open) => !open)}
+        onClick={() =>
+          setIsOpen((open) => !open)
+        }
         aria-label="View tickets that need attention"
         aria-expanded={isOpen}
         className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 transition hover:bg-slate-50 hover:text-slate-900"
@@ -141,7 +146,9 @@ function NotificationsDropdown() {
                     key={ticket.ticketId}
                     type="button"
                     onClick={() =>
-                      handleTicketClick(ticket.ticketId)
+                      handleTicketClick(
+                        ticket.ticketId
+                      )
                     }
                     className="flex w-full gap-3 px-4 py-3.5 text-left transition hover:bg-slate-50"
                   >

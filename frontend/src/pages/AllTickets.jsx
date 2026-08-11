@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import toast from "react-hot-toast";
 
 import { getTickets } from "../services/ticketService";
 import SearchAndFilter from "../components/SearchAndFilter";
@@ -31,7 +32,12 @@ function AllTickets() {
 
         setTickets(data);
       } catch (error) {
-        setError(error.response?.data?.message || "Failed to load tickets.");
+        const message =
+          error?.response?.data?.message ||
+          "Failed to load tickets.";
+
+        setError(message);
+        toast.error(message);
       } finally {
         setLoading(false);
       }
@@ -45,18 +51,28 @@ function AllTickets() {
   }, [search, status]);
 
   // Pagination
-  const totalPages = Math.ceil(tickets.length / ticketsPerPage);
+  const totalPages = Math.ceil(
+    tickets.length / ticketsPerPage
+  );
 
-  const startIndex = (currentPage - 1) * ticketsPerPage;
+  const startIndex =
+    (currentPage - 1) * ticketsPerPage;
 
-  const currentTickets = tickets.slice(startIndex, startIndex + ticketsPerPage);
+  const currentTickets = tickets.slice(
+    startIndex,
+    startIndex + ticketsPerPage
+  );
 
   const goToPreviousPage = () => {
-    setCurrentPage((page) => Math.max(page - 1, 1));
+    setCurrentPage((page) =>
+      Math.max(page - 1, 1)
+    );
   };
 
   const goToNextPage = () => {
-    setCurrentPage((page) => Math.min(page + 1, totalPages));
+    setCurrentPage((page) =>
+      Math.min(page + 1, totalPages)
+    );
   };
 
   const handleSearchChange = (value) => {
@@ -107,7 +123,10 @@ function AllTickets() {
 
           {/* Ticket Table */}
           <div className="mt-5">
-            <TicketTable tickets={currentTickets} loading={loading} />
+            <TicketTable
+              tickets={currentTickets}
+              loading={loading}
+            />
           </div>
 
           {/* Pagination */}
@@ -120,7 +139,10 @@ function AllTickets() {
                 </span>{" "}
                 -{" "}
                 <span className="font-medium text-slate-700">
-                  {Math.min(startIndex + ticketsPerPage, tickets.length)}
+                  {Math.min(
+                    startIndex + ticketsPerPage,
+                    tickets.length
+                  )}
                 </span>{" "}
                 of{" "}
                 <span className="font-medium text-slate-700">
@@ -130,6 +152,7 @@ function AllTickets() {
               </p>
 
               <div className="flex items-center gap-2">
+                {/* Previous */}
                 <button
                   type="button"
                   onClick={goToPreviousPage}
@@ -137,12 +160,16 @@ function AllTickets() {
                   aria-label="Previous page"
                   className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 transition hover:bg-slate-50 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
                 >
-                  <ChevronLeft size={17} strokeWidth={1.9} />
+                  <ChevronLeft
+                    size={17}
+                    strokeWidth={1.9}
+                  />
                 </button>
 
+                {/* Page Numbers */}
                 {Array.from(
                   { length: totalPages },
-                  (_, index) => index + 1,
+                  (_, index) => index + 1
                 ).map((page) => (
                   <button
                     key={page}
@@ -158,6 +185,7 @@ function AllTickets() {
                   </button>
                 ))}
 
+                {/* Next */}
                 <button
                   type="button"
                   onClick={goToNextPage}
@@ -165,7 +193,10 @@ function AllTickets() {
                   aria-label="Next page"
                   className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 transition hover:bg-slate-50 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
                 >
-                  <ChevronRight size={17} strokeWidth={1.9} />
+                  <ChevronRight
+                    size={17}
+                    strokeWidth={1.9}
+                  />
                 </button>
               </div>
             </div>

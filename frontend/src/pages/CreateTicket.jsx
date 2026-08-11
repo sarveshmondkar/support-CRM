@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { createTicket } from "../services/ticketService";
+import toast from "react-hot-toast";
 
 function CreateTicket() {
   const navigate = useNavigate();
@@ -14,7 +15,6 @@ function CreateTicket() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -27,17 +27,17 @@ function CreateTicket() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setError("");
 
     try {
       setLoading(true);
 
       const ticket = await createTicket(formData);
+      toast.success(`Ticket ${ticket.ticketId} created successfully`);
 
       navigate(`/tickets/${ticket.ticketId}`);
     } catch (error) {
-      setError(
-        error.response?.data?.message ||
+      toast.error(
+        error?.response?.data?.message ||
           "Failed to create ticket. Please try again.",
       );
     } finally {
@@ -76,12 +76,6 @@ function CreateTicket() {
           onSubmit={handleSubmit}
           className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7"
         >
-          {error && (
-            <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-              {error}
-            </div>
-          )}
-
           <div className="grid gap-5 sm:grid-cols-2">
             <div>
               <label

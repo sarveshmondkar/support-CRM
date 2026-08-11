@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { getTicketById, updateTicket } from "../services/ticketService";
+import toast from "react-hot-toast";
+
+import {
+  getTicketById,
+  updateTicket,
+} from "../services/ticketService";
 
 function TicketDetails() {
   const { ticketId } = useParams();
@@ -13,7 +18,6 @@ function TicketDetails() {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
   useEffect(() => {
     const fetchTicket = async () => {
@@ -26,7 +30,10 @@ function TicketDetails() {
         setTicket(data);
         setStatus(data.status);
       } catch (error) {
-        setError(error.response?.data?.message || "Failed to load ticket.");
+        setError(
+          error.response?.data?.message ||
+            "Failed to load ticket."
+        );
       } finally {
         setLoading(false);
       }
@@ -43,7 +50,6 @@ function TicketDetails() {
     try {
       setUpdating(true);
       setError("");
-      setSuccess("");
 
       const updateData = {};
 
@@ -66,13 +72,14 @@ function TicketDetails() {
       setTicket(updatedTicket);
       setStatus(updatedTicket.status);
       setNote("");
-      setSuccess("Ticket updated successfully.");
 
-      setTimeout(() => {
-        setSuccess("");
-      }, 3000);
+      toast.success("Ticket updated successfully.");
     } catch (error) {
-      setError(error.response?.data?.message || "Failed to update ticket.");
+      const message =
+        error.response?.data?.message ||
+        "Failed to update ticket.";
+
+      toast.error(message);
     } finally {
       setUpdating(false);
     }
@@ -99,11 +106,13 @@ function TicketDetails() {
               Unable to load ticket
             </h2>
 
-            <p className="mt-2 text-sm text-red-700">{error}</p>
+            <p className="mt-2 text-sm text-red-700">
+              {error}
+            </p>
 
             <Link
               to="/"
-              className="inline-flex items-center text-sm font-medium text-slate-500 transition hover:text-slate-900"
+              className="mt-4 inline-flex items-center text-sm font-medium text-slate-500 transition hover:text-slate-900"
             >
               <ArrowLeft size={16} strokeWidth={2} />
               <span className="ml-2">Back to tickets</span>
@@ -123,7 +132,8 @@ function TicketDetails() {
             to="/"
             className="inline-flex items-center text-sm font-medium text-slate-500 transition hover:text-slate-900"
           >
-            ← Back to tickets
+            <ArrowLeft size={16} strokeWidth={2} />
+            <span className="ml-2">Back to tickets</span>
           </Link>
 
           <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
@@ -137,7 +147,8 @@ function TicketDetails() {
               </h1>
 
               <p className="mt-2 text-sm text-slate-500">
-                Created {new Date(ticket.createdAt).toLocaleString()}
+                Created{" "}
+                {new Date(ticket.createdAt).toLocaleString()}
               </p>
             </div>
 
@@ -154,19 +165,6 @@ function TicketDetails() {
             </span>
           </div>
         </div>
-
-        {/* Alerts */}
-        {error && (
-          <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-            {error}
-          </div>
-        )}
-
-        {success && (
-          <div className="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
-            {success}
-          </div>
-        )}
 
         <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
           {/* Main content */}
@@ -205,7 +203,9 @@ function TicketDetails() {
             {/* Notes */}
             <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
               <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-slate-900">Notes</h2>
+                <h2 className="text-lg font-semibold text-slate-900">
+                  Notes
+                </h2>
 
                 <span className="text-xs font-medium text-slate-400">
                   {ticket.notes?.length || 0} notes
@@ -224,7 +224,9 @@ function TicketDetails() {
                       </p>
 
                       <p className="mt-2 text-xs text-slate-400">
-                        {new Date(item.createdAt).toLocaleString()}
+                        {new Date(
+                          item.createdAt
+                        ).toLocaleString()}
                       </p>
                     </div>
                   ))}
@@ -249,7 +251,9 @@ function TicketDetails() {
                 <textarea
                   id="note"
                   value={note}
-                  onChange={(event) => setNote(event.target.value)}
+                  onChange={(event) =>
+                    setNote(event.target.value)
+                  }
                   placeholder="Write a note about this ticket..."
                   rows={4}
                   className="w-full resize-none rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
@@ -280,11 +284,15 @@ function TicketDetails() {
                 <select
                   id="status"
                   value={status}
-                  onChange={(event) => setStatus(event.target.value)}
+                  onChange={(event) =>
+                    setStatus(event.target.value)
+                  }
                   className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
                 >
                   <option value="Open">Open</option>
-                  <option value="In Progress">In Progress</option>
+                  <option value="In Progress">
+                    In Progress
+                  </option>
                   <option value="Closed">Closed</option>
                 </select>
               </div>
@@ -293,7 +301,8 @@ function TicketDetails() {
                 type="button"
                 onClick={handleUpdate}
                 disabled={
-                  updating || (!note.trim() && status === ticket.status)
+                  updating ||
+                  (!note.trim() && status === ticket.status)
                 }
                 className="mt-5 w-full rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
               >
